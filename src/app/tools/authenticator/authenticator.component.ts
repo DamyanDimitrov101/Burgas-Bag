@@ -1,4 +1,6 @@
+import { registerLocaleData } from '@angular/common';
 import { Component } from '@angular/core';
+import { FirebaseTSAuth } from "firebasets/firebasetsAuth/firebaseTSAuth";
 
 @Component({
   selector: 'app-authenticator',
@@ -7,7 +9,48 @@ import { Component } from '@angular/core';
 })
 export class AuthenticatorComponent {
   state = AuthenticatorCompState.LOGIN;
-  constructor() {}
+  firebasetsAuth: FirebaseTSAuth;
+
+  constructor() {
+    this.firebasetsAuth = new FirebaseTSAuth();
+  }
+  
+  onRegisterClick(
+    registerEmail: HTMLInputElement,
+    registerPassword: HTMLInputElement,
+    registerConfirmPassword: HTMLInputElement){
+      
+      let email = registerEmail.value;
+      let password = registerPassword.value;
+      let confirmPassword = registerConfirmPassword.value;
+
+      if(
+        this.isNotEmpty(email) &&
+        this.isNotEmpty(password)
+      ){
+
+        this.firebasetsAuth.createAccountWith(
+          {
+            email: "",
+            password: "",
+            onComplete: (uc) => {
+              alert("Account Created");
+            },
+            onFail: (err) => {
+              alert("Failed to create the account.");
+            }
+          }
+          );
+        }
+  }
+
+  isNotEmpty(text:string){
+    return text != null && text.length > 0;
+  }
+
+  isMatch(text: string, comparedWith: string){
+    return text == comparedWith;
+  }
 
   onForgotPasswordClick(){
     this.state = AuthenticatorCompState.FORGOT_PASSWORD;
