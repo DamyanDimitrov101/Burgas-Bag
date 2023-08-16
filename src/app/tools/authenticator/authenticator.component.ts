@@ -15,6 +15,30 @@ export class AuthenticatorComponent {
     this.firebasetsAuth = new FirebaseTSAuth();
   }
   
+  onLogin(
+    loginEmail: HTMLInputElement,
+    loginPassword: HTMLInputElement){
+          
+      let email = loginEmail.value;
+      let password = loginPassword.value;
+      
+      if(
+        this.isNotEmpty(email) &&
+        this.isNotEmpty(password)
+      ){
+        this.firebasetsAuth.signInWith({
+          email: email,
+          password: password,
+          onComplete: (uc) => {
+            alert("Logged In")
+          },
+          onFail: (err) => {
+            alert(err)
+          }
+        })
+      }
+  }
+
   onRegisterClick(
     registerEmail: HTMLInputElement,
     registerPassword: HTMLInputElement,
@@ -31,10 +55,13 @@ export class AuthenticatorComponent {
 
         this.firebasetsAuth.createAccountWith(
           {
-            email: "",
-            password: "",
+            email: email,
+            password: password,
             onComplete: (uc) => {
               alert("Account Created");
+              registerEmail.value = "";
+              registerPassword.value = "";
+              registerConfirmPassword.value = "";
             },
             onFail: (err) => {
               alert("Failed to create the account.");
@@ -42,6 +69,21 @@ export class AuthenticatorComponent {
           }
           );
         }
+  }
+
+  onResetClick(
+    resetEmail: HTMLInputElement,    
+  ){
+    let email = resetEmail.value;
+    if(
+      this.isNotEmpty(email)){
+      this.firebasetsAuth.sendPasswordResetEmail({
+        email: email,
+        onComplete: (err) => {
+          alert(`Reset email sent to ${email}`);
+        }
+      })
+    }
   }
 
   isNotEmpty(text:string){
