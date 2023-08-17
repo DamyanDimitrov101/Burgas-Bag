@@ -5,9 +5,15 @@
         <h1 id="nav-bar-items">Burgas</h1> <h3>Bag</h3>
       </div>
     </div>
-    <div (click)="onLoginClick()"
+    <div *ngIf="!loggedIn()"
+     (click)="onLoginClick()"
      id="nav-bar-right">
         <div id="nav-bar-items">Login</div>
+    </div>
+    <div *ngIf="loggedIn()" 
+    (click)="onLogoutClick()"
+     id="nav-bar-right">
+        <div id="nav-bar-items">LogOut</div>
     </div>
   </div>
 </div>

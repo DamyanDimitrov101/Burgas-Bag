@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import { Component } from '@angular/core';
 import { FirebaseTSAuth } from "firebasets/firebasetsAuth/firebaseTSAuth";
+import { MatBottomSheetRef } from "@angular/material/bottom-sheet";
 
 @Component({
   selector: 'app-authenticator',
@@ -11,7 +12,7 @@ export class AuthenticatorComponent {
   state = AuthenticatorCompState.LOGIN;
   firebasetsAuth: FirebaseTSAuth;
 
-  constructor() {
+  constructor(private bottomSheetRef: MatBottomSheetRef) {
     this.firebasetsAuth = new FirebaseTSAuth();
   }
   
@@ -30,7 +31,7 @@ export class AuthenticatorComponent {
           email: email,
           password: password,
           onComplete: (uc) => {
-            alert("Logged In")
+          this.bottomSheetRef.dismiss();
           },
           onFail: (err) => {
             alert(err)
@@ -58,10 +59,7 @@ export class AuthenticatorComponent {
             email: email,
             password: password,
             onComplete: (uc) => {
-              alert("Account Created");
-              registerEmail.value = "";
-              registerPassword.value = "";
-              registerConfirmPassword.value = "";
+              this.bottomSheetRef.dismiss();
             },
             onFail: (err) => {
               alert("Failed to create the account.");
@@ -80,7 +78,7 @@ export class AuthenticatorComponent {
       this.firebasetsAuth.sendPasswordResetEmail({
         email: email,
         onComplete: (err) => {
-          alert(`Reset email sent to ${email}`);
+          this.bottomSheetRef.dismiss();
         }
       })
     }
