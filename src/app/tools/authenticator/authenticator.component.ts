@@ -1,4 +1,3 @@
-import { registerLocaleData } from '@angular/common';
 import { Component } from '@angular/core';
 import { FirebaseTSAuth } from "firebasets/firebasetsAuth/firebaseTSAuth";
 import { MatBottomSheetRef } from "@angular/material/bottom-sheet";
@@ -22,7 +21,7 @@ export class AuthenticatorComponent {
           
       let email = loginEmail.value;
       let password = loginPassword.value;
-      
+
       if(
         this.isNotEmpty(email) &&
         this.isNotEmpty(password)
